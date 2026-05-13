@@ -1,0 +1,8 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "path": "SalesAnalytics.SemanticModel"
+    }
+  ]
+}

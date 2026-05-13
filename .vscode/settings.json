@@ -1,0 +1,12 @@
+{
+  "editor.inlineSuggest.enabled": true,
+  "github.copilot.inlineSuggest.enable": true,
+  "editor.quickSuggestions": {
+    "other": "on",
+    "comments": "on",
+    "strings": "on"
+  },
+  "files.associations": {
+    "*.dax": "sql"
+  }
+}

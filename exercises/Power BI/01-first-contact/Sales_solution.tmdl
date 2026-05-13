@@ -1,0 +1,15 @@
+table Sales
+	column OrderId
+		datatype: string
+
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	measure 'Total Revenue' =
+		SUMX ( Sales, Sales[Quantity] * Sales[UnitPrice] )
+
+	measure 'Orders Count' =
+		DISTINCTCOUNT ( Sales[OrderId] )

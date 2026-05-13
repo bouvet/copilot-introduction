@@ -1,0 +1,17 @@
+table Sales
+	column OrderId
+		datatype: string
+
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	measure 'Total Revenue' = 
+		// TODO: implement revenue = quantity * unit price across Sales rows
+
+        
+
+	measure 'Orders Count' =
+		// TODO: distinct count of Sales[OrderId]

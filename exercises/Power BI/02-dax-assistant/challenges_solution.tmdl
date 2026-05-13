@@ -1,0 +1,52 @@
+table Sales
+	column Date
+		datatype: datetime
+
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	column UnitCost
+		datatype: double
+
+	column Region
+		datatype: string
+
+	measure 'Total Revenue' =
+		SUMX ( Sales, Sales[Quantity] * Sales[UnitPrice] )
+
+	measure 'Total Margin' =
+		VAR Revenue = [Total Revenue]
+		VAR Cost =
+			SUMX ( Sales, Sales[Quantity] * Sales[UnitCost] )
+		RETURN
+			Revenue - Cost
+
+	measure 'Margin %' =
+		DIVIDE ( [Total Margin], [Total Revenue] )
+
+	measure 'North Revenue' =
+		CALCULATE (
+			[Total Revenue],
+			REMOVEFILTERS ( Sales[Region] ),
+			Sales[Region] = "North"
+		)
+
+	measure 'YTD Revenue' =
+		TOTALYTD ( [Total Revenue], Sales[Date] )
+
+
+table Products
+	column ProductName
+		datatype: string
+
+	measure 'Product Revenue Rank' =
+		RANKX (
+			ALL ( Products[ProductName] ),
+			[Total Revenue],
+			,
+			DESC,
+			DENSE
+		)

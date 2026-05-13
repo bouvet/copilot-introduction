@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "description": "PBIP-aligned DAX bugfix exercise container"
+  }
+}

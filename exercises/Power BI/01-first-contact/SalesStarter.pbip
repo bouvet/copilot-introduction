@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "path": "SalesStarter.SemanticModel"
+    }
+  ],
+  "settings": {
+    "description": "Minimal PBIP-style exercise container for Copilot practice"
+  }
+}

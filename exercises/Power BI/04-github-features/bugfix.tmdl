@@ -1,0 +1,19 @@
+table Sales
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	column UnitCost
+		datatype: double
+
+	measure 'Total Revenue' =
+		SUMX ( Sales, Sales[Quantity] * Sales[UnitPrice] )
+
+	measure 'Total Margin' =
+		SUMX ( Sales, Sales[Quantity] * ( Sales[UnitPrice] - Sales[UnitCost] ) )
+
+	measure 'Margin %' =
+		// BUG: this divides by margin instead of revenue
+		DIVIDE ( [Total Revenue], [Total Margin] )

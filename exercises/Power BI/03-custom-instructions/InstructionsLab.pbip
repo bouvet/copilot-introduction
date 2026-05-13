@@ -1,0 +1,11 @@
+{
+  "version": "1.0",
+  "artifacts": [
+    {
+      "path": ".github"
+    }
+  ],
+  "settings": {
+    "description": "PBIP-aligned Copilot instructions exercise container"
+  }
+}

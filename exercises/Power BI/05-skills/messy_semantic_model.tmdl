@@ -1,0 +1,73 @@
+table Sales
+	column OrderId
+		datatype: string
+
+	column Date
+		datatype: datetime
+
+	column CustomerId
+		datatype: string
+
+	column ProductId
+		datatype: string
+
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	column UnitCost
+		datatype: double
+
+	column Region
+		datatype: string
+
+	measure 'Total Revenue' =
+		SUMX(Sales,Sales[Quantity]*Sales[UnitPrice])
+
+	measure 'Total Margin' =
+		SUMX( Sales, Sales[Quantity] * (Sales[UnitPrice]-Sales[UnitCost]) )
+
+	measure 'Margin %' =
+		DIVIDE([Total Revenue],[Total Margin])
+
+	measure 'Revenue YoY %' =
+		DIVIDE(
+			[Total Revenue] - CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(Sales[Date])),
+			CALCULATE([Total Revenue], SAMEPERIODLASTYEAR(Sales[Date]))
+		)
+
+	measure 'North Revenue' =
+		CALCULATE([Total Revenue], Sales[Region] = "North")
+
+	measure 'Enterprise Revenue' =
+		CALCULATE([Total Revenue], Customers[Segment] = "Enterprise")
+
+
+table Products
+	column ProductId
+		datatype: string
+
+	column ProductName
+		datatype: string
+
+	column Category
+		datatype: string
+
+	measure 'Product Revenue Rank' =
+		RANKX(ALL(Products[ProductName]), [Total Revenue],, DESC, DENSE)
+
+
+table Customers
+	column CustomerId
+		datatype: string
+
+	column CustomerName
+		datatype: string
+
+	column Segment
+		datatype: string
+
+	column Region
+		datatype: string

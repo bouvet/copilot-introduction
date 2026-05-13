@@ -1,0 +1,38 @@
+table Sales
+	column Date
+		datatype: datetime
+
+	column Quantity
+		datatype: int64
+
+	column UnitPrice
+		datatype: double
+
+	column UnitCost
+		datatype: double
+
+	column Region
+		datatype: string
+
+	measure 'Total Revenue' =
+		// TODO Challenge 1: Revenue = sum of Quantity * UnitPrice over Sales rows.
+
+	measure 'Total Margin' =
+		// TODO Challenge 2: Margin = Revenue - Cost, where Cost = sum of Quantity * UnitCost.
+
+	measure 'Margin %' =
+		// TODO Challenge 3: Margin % = Total Margin / Total Revenue with safe division.
+
+	measure 'North Revenue' =
+		// TODO Challenge 4: Return revenue for Region = "North" regardless of report region filters.
+
+	measure 'YTD Revenue' =
+		// TODO Challenge 5: Running total revenue from start of year to visible date.
+
+
+table Products
+	column ProductName
+		datatype: string
+
+	measure 'Product Revenue Rank' =
+		// TODO Challenge 6: Rank products by Total Revenue in descending order.
