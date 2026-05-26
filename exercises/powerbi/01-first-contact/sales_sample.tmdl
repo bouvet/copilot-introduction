@@ -13,7 +13,7 @@ table sales_sample
 	/// Total quantity
 	/// TODO: Calculates the total quantity of all products sold (HINT: SUM(sales_sample[quantity]) )
 	measure 'Total Quantity' = BLANK()
-		formatString: "$"#,0.00
+		formatString: #,0
 		lineageTag: 10000000-0000-0000-0000-000000000002
 
 	/// Orders by Region

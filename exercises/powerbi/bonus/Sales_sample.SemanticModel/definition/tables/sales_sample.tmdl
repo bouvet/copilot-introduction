@@ -15,7 +15,7 @@ table sales_sample
 		lineageTag: 3c686e2a-6357-4036-a342-2220a81cf29b
 
 	measure NorthOnly = CALCULATE([Total Sales], sales_sample[region] = "North")
-		formatString: #,0
+		formatString: "$"#,0.00
 		lineageTag: 7c7226f2-f52f-4370-98ef-71b57a5d4b75
 
 	measure avg = SUM(sales_sample[quantity]) / COUNT(sales_sample[order_id])
