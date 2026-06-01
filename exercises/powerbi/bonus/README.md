@@ -87,7 +87,7 @@ In this step you'll create a reusable prompt (skill) and place it under `.github
 
 **Option A — Copy the provided skill:**
 1. Create the folder `.github/skills/audit-data-model/` in the workspace root
-2. Copy `audit-data-model/skill.md` from this exercise folder into it
+2. Copy `audit-data-model/SKILL.md` from this exercise folder into it as `skill.md`
 
 **Option B — Write your own from scratch:**
 1. Create `.github/skills/audit-data-model/skill.md`
