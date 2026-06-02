@@ -11,7 +11,10 @@ table sales_sample
 	/// Business requirement: Calculate total revenue across all orders
 	/// Revenue per row = quantity * unit_price (converted to number)
 	/// TODO: Use SUMX to iterate over rows
-	measure 'Total Revenue' = BLANK()
+	measure 'Total Revenue' = 
+			SUMX(
+				sales_sample, sales_sample[quantity] * VALUE(sales_sample[unit_price])
+			)
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000001
 
@@ -19,7 +22,10 @@ table sales_sample
 	/// Business requirement: Show revenue for "North" region only,
 	/// regardless of any region filter applied in the report
 	/// TODO: Use CALCULATE to override filters
-	measure 'North Region Revenue' = BLANK()
+	measure 'North Region Revenue' = 
+			CALCULATE(
+				[Total Revenue], sales_sample[region] = "North"
+				)
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000002
 
@@ -27,7 +33,11 @@ table sales_sample
 	/// Business requirement: Show cumulative revenue from the start of the current year
 	/// up to the latest date in the current filter context
 	/// TODO: Use TOTALYTD time intelligence function
-	measure 'YTD Revenue Ex2' = BLANK()
+	measure 'YTD Revenue Ex2' = 
+		TOTALYTD(
+			[Total Revenue],
+			sales_sample[order_date]
+		)
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000003
 
@@ -35,7 +45,14 @@ table sales_sample
 	/// Business requirement: Rank each product by its Total Revenue within
 	/// the current filter context (rank 1 = highest revenue product)
 	/// TODO: Use RANKX to calculate the ranking
-	measure 'Product Rank by Revenue' = BLANK()
+	measure 'Product Rank by Revenue' = 
+		RANKX(
+			ALLSELECTED(sales_sample[product]),
+			[Total Revenue],
+			,
+			DESC,
+			DENSE
+		)
 		formatString: #,0
 		lineageTag: 20000000-0000-0000-0000-000000000004
 
@@ -43,7 +60,16 @@ table sales_sample
 	/// Business requirement: Calculate total revenue but only for the top 10 customers
 	/// (by their total revenue)
 	/// TODO: Use TOPN and SUMX together
-	measure 'Top 10 Customers Revenue' = BLANK()
+	measure 'Top 10 Customers Revenue' = 
+		SUMX(
+			TOPN(
+				10,
+				ALL(sales_sample[customer_id]),
+				[Total Revenue],
+				DESC
+			),
+			[Total Revenue]
+		)
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000005
 
@@ -51,14 +77,28 @@ table sales_sample
 	/// Business requirement: Calculate the difference between current month revenue
 	/// and previous month revenue
 	/// TODO: Use DATEADD to shift dates
-	measure 'Revenue Change vs Prev Month' = BLANK()
+	measure 'Revenue Change vs Prev Month' = 
+		VAR CurrentRevenue =
+        [Total Revenue]
+    	VAR PreviousRevenue =
+        CALCULATE(
+            [Total Revenue],
+            DATEADD(sales_sample[order_date], -1, MONTH)
+        )
+    	RETURN
+        CurrentRevenue - PreviousRevenue
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000006
 
 	/// Challenge 7: Average Order Value Ex2
 	/// Business requirement: Calculate the average revenue per unique order
 	/// TODO: Use DISTINCTCOUNT to count unique orders, use DIVIDE for safety
-	measure 'Average Order Value Ex2' = BLANK()
+	measure 'Average Order Value Ex2' = 
+		DIVIDE(
+			[Total Revenue],
+			DISTINCTCOUNT(sales_sample[order_id]),
+			0
+		)
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000007
 
@@ -66,7 +106,26 @@ table sales_sample
 	/// Business requirement: Show revenue for the selected period compared to
 	/// the same period last year, showing both values and the % change
 	/// TODO: Use VAR to store intermediate calculations, SAMEPERIODLASTYEAR
-	measure 'Revenue YoY Comparison' = BLANK()
+	measure 'Revenue YoY Comparison' = 
+		VAR CurrentRevenue =
+        	[Total Revenue]
+		VAR LastYearRevenue =
+			CALCULATE(
+				[Total Revenue],
+				SAMEPERIODLASTYEAR(sales_sample[order_date])
+			)
+		VAR RevenueChange =
+			CurrentRevenue - LastYearRevenue
+		VAR PercentChange =
+			DIVIDE(
+				RevenueChange,
+				LastYearRevenue,
+				0
+        )
+    	RETURN
+			"Current: " & FORMAT(CurrentRevenue, "$#,0") &
+			" | Last Year: " & FORMAT(LastYearRevenue, "$#,0") &
+			" | Change: " & FORMAT(PercentChange, "0.0%")
 		formatString: "$"#,0.00
 		lineageTag: 20000000-0000-0000-0000-000000000008
 
