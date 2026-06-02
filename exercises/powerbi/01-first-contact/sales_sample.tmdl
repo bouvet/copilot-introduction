@@ -37,21 +37,39 @@ table sales_sample
 	
 	/// Previous Month Revenue
 	/// TODO: Calculate revenue for the previous month
-	/// measure 'Previous Month Revenue' = BLANK()
-	///		formatString: "$"#,0.00
-	///		lineageTag: 10000000-0000-0000-0000-000000000005
+	 measure 'Previous Month Revenue' = 
+	 	CALCULATE(
+			[Total Sales],
+			DATEADD(sales_sample[order_date], -1, MONTH)
+		)
+		formatString: "$"#,0.00
+			lineageTag: 10000000-0000-0000-0000-000000000005
 
 	/// Year-to-Date Revenue
 	/// TODO: Calculate year-to-date revenue using TOTALYTD
-	/// measure 'YTD Revenue' = BLANK()
-	///		formatString: "$"#,0.00
-	///		lineageTag: 10000000-0000-0000-0000-000000000006
+	 measure 'YTD Revenue' = 
+		TOTALYTD(
+			[Total Sales],
+			sales_sample[order_date]
+		)
+			formatString: "$"#,0.00
+			lineageTag: 10000000-0000-0000-0000-000000000006
 
 	/// Revenue Growth %
 	/// TODO: Calculate percentage growth vs previous month
-	/// measure 'Revenue Growth %' = BLANK()
-	///		formatString: 0.00%;-0.00%;0.00%
-	///		lineageTag: 10000000-0000-0000-0000-000000000007
+	measure 'Revenue Growth %' = 
+		VAR CurrentRevenue = [Total Sales]
+		VAR PreviousRevenue = 
+			CALCULATE(
+				[Total Sales], 
+				DATEADD(sales_sample[order_date], -1, MONTH)
+				)
+		RETURN		
+		DIVIDE(
+			CurrentRevenue - PreviousRevenue, PreviousRevenue, 0
+		)
+			formatString: 0.00%;-0.00%;0.00%
+			lineageTag: 10000000-0000-0000-0000-000000000007
 
 	column order_id
 		dataType: string
