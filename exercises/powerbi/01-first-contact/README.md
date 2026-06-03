@@ -72,7 +72,7 @@ Scroll down to find the "Exercise 01" section with TODO measures. Notice the `//
 
 Go to the `'Total Quantity'` measure. Delete `BLANK()` and **start typing the DAX yourself** — as you type `SUM(`, Copilot will suggest the rest. Press `Tab` to accept.
 
-> **Tip:** If the suggestion isn't right, press `Esc` and try typing a bit more to give Copilot more context. You can also cycle through alternative suggestions with `Alt+]` (Windows/Linux) or `Option+]` (Mac).
+> **Tip:** If the suggestion isn't right, press `Esc` and try typing a bit more to give Copilot more context. You can also cycle through alternative suggestions with `Alt+ å ` (Windows/Linux) or `Option+]` (Mac).
 
 ### 3. Let a comment guide Copilot
 
