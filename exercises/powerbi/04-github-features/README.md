@@ -56,9 +56,18 @@ _(Replace `main` with `master` if your repository uses `master` as the default b
 
 ### 3. Open a Pull Request on GitHub
 
-1. Go to your fork on GitHub.com
-2. Click **"Compare & pull request"** or go to **Pull requests → New pull request**
-3. Set the base repository to **your own fork**, base branch `main` (or `master`)
+After pushing your branch, go to your **forked repository** on GitHub.com (not the original repo).
+
+1. You should see a **green banner** at the top of the page saying something like:  
+   _"Your branch is 1 commit ahead — Compare & pull request"_
+2. Click the **"Compare & pull request"** button in that banner
+
+> ⚠️ **Important:** When the PR creation form opens, pay close attention to the **base repository** dropdown at the top. By default, GitHub may set the base to the **original (upstream) repository**. You must change it to point to **your own fork** instead.  
+>
+> It should read:  
+> `base repository: <your-username>/<repo-name>` · `base: main` ← `compare: main`  
+>
+> If it says the original org/repo as base, click the **base repository** dropdown and switch it to your fork. This is a common mistake — pushing a PR to the upstream repo instead of your own fork.
 
 ### 4. Use Copilot to generate the PR description
 
