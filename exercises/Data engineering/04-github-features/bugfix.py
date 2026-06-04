@@ -21,7 +21,7 @@ def calculate_discounted_price(unit_price: float, quantity: int, discount_pct: f
         >>> calculate_discounted_price(100.0, 3, 10)
         270.0   # 3 * 100 * (1 - 0.10) = 270.0
     """
-    discount_multiplier = 1 - discount_pct  # BUG: discount_pct should be divided by 100
+    discount_multiplier = 1 - (discount_pct / 100)
     return unit_price * quantity * discount_multiplier
 
 
