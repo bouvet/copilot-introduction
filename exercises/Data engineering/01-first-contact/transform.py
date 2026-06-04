@@ -49,8 +49,10 @@ def clean_row(row: dict) -> dict:
     Returns:
         The same dict with converted values.
     """
-    # TODO: convert quantity to int, unit_price to float, order_date to datetime.date
-    pass
+    row["quantity"] = int(row["quantity"])
+    row["unit_price"] = float(row["unit_price"])
+    row["order_date"] = datetime.datetime.strptime(row["order_date"], "%Y-%m-%d").date()
+    return row
 
 
 def clean_data(rows: list[dict]) -> list[dict]:
@@ -62,8 +64,13 @@ def clean_data(rows: list[dict]) -> list[dict]:
     Returns:
         A list of cleaned rows.
     """
-    # TODO: apply clean_row to each row; skip rows that raise a ValueError or KeyError
-    pass
+    cleaned_rows = []
+    for row in rows:
+        try:
+            cleaned_rows.append(clean_row(row))
+        except (ValueError, KeyError):
+            pass
+    return cleaned_rows
 
 
 # ---------------------------------------------------------------------------
@@ -81,8 +88,7 @@ def calculate_revenue(row: dict) -> float:
     Returns:
         Revenue as a float.
     """
-    # TODO: implement this function
-    pass
+    return row["quantity"] * row["unit_price"]
 
 
 # ---------------------------------------------------------------------------
@@ -99,8 +105,7 @@ def filter_by_region(rows: list[dict], region: str) -> list[dict]:
     Returns:
         Filtered list of rows.
     """
-    # return only rows where the region matches the given region string (case-insensitive)
-    pass
+    return [row for row in rows if row["region"].lower() == region.lower()]
 
 
 # ---------------------------------------------------------------------------
@@ -117,4 +122,9 @@ def summarise_by_category(rows: list[dict]) -> dict[str, float]:
     Returns:
         Dict of {category: total_revenue}.
     """
-    pass
+    summary = {}
+    for row in rows:
+        category = row["category"]
+        revenue = calculate_revenue(row)
+        summary[category] = summary.get(category, 0) + revenue
+    return summary
