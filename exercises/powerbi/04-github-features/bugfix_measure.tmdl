@@ -28,7 +28,9 @@ table sales_sample
 			        DATEADD(sales_sample[order_date], -1, MONTH)
 			    )
 			RETURN
-			-- BUG: This division will fail when PreviousRevenue is 0 or BLANK
-			(CurrentRevenue - PreviousRevenue) / PreviousRevenue
-		formatString: 0.0%;-0.0%;0.0%
+		DIVIDE(
+			CurrentRevenue - PreviousRevenue,
+			PreviousRevenue,
+			BLANK()
+		)
 		lineageTag: 40000000-0000-0000-0000-000000000001
