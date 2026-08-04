@@ -25,7 +25,7 @@ table sales_sample
 			VAR PreviousRevenue = 
 			    CALCULATE(
 			        [Total Revenue],
-			        DATEADD(sales_sample[order_date], -1, MONTH )
+			        DATEADD(sales_sample[order_date], -1, MONTH)
 			    )
 			RETURN
 		DIVIDE(
