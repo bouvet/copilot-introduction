@@ -33,4 +33,3 @@ table sales_sample
 			PreviousRevenue,
 			BLANK()
 		)
-		lineageTag: 40000000-0000-0000-0000-000000000001
